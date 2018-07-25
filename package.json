@@ -1,8 +1,11 @@
 {
-  "name": "serverless-stack-output",
-  "description": "Serverless plugin to process AWS CloudFormation Stack Output",
+  "name": "serverless-discovery-plugin",
+  "description": "Serverless plugin to register/de-register endpoints upon deploy and remove command hooks",
   "license": "MIT",
-  "author": "Sebastian Müller <mail@sbstjn.com>",
+  "author": "Andrew Regier <aregier@regiernet.com>",
+  "contributors": [
+    "Sebastian Müller <mail@sbstjn.com>"
+  ],
   "main": "dist",
   "scripts": {
     "clean": "rimraf dist",
@@ -15,19 +18,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sbstjn/serverless-stack-output.git"
+    "url": "git+https://github.com/aregier/serverless-discovery-plugin.git"
   },
   "bugs": {
-    "url": "https://github.com/sbstjn/serverless-stack-output/issues"
+    "url": "https://github.com/aregier/serverless-discovery-plugin"
   },
-  "homepage": "https://github.com/sbstjn/serverless-stack-output#readme",
+  "homepage": "https://github.com/aregier/serverless-discovery-plugin#readme",
   "keywords": [
     "serverless",
     "plugin",
     "aws",
     "cloudformation",
-    "stack",
-    "output"
+    "service",
+    "discovery"
   ],
   "dependencies": {
     "tomlify-j0.4": "^2.0.0",

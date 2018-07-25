@@ -1,9 +1,9 @@
-# Serverless Stack Output Plugin
+# Serverless Discovery Plugin
 
-[![npm](https://img.shields.io/npm/v/serverless-stack-output.svg)](https://www.npmjs.com/package/serverless-stack-output)
-[![license](https://img.shields.io/github/license/sbstjn/serverless-stack-output.svg)](https://github.com/sbstjn/serverless-stack-output/blob/master/LICENSE.md)
-[![CircleCI](https://img.shields.io/circleci/project/github/sbstjn/serverless-stack-output.svg)](https://circleci.com/gh/sbstjn/serverless-stack-output)
-[![Coveralls](https://img.shields.io/coveralls/sbstjn/serverless-stack-output.svg)](https://coveralls.io/github/sbstjn/serverless-stack-output)
+[![npm](https://img.shields.io/npm/v/serverless-discovery-plugin.svg)](https://www.npmjs.com/package/serverless-discovery-plugin)
+[![license](https://img.shields.io/github/license/aregier/serverless-discovery-plugin.svg)](https://github.com/aregier/serverless-discovery-plugin/blob/master/LICENSE.md)
+[![CircleCI](https://img.shields.io/circleci/project/github/aregier/serverless-discovery-plugin.svg)](https://circleci.com/gh/aregier/serverless-discovery-plugin)
+[![Coveralls](https://img.shields.io/coveralls/aregier/serverless-discovery-plugin.svg)](https://coveralls.io/github/aregier/serverless-discovery-plugin)
 
 A [serverless](https://serverless.com) plugin to store output from your AWS CloudFormation Stack in JSON/YAML/TOML files, or to pass the output to a JavaScript function for further processing.
 
@@ -12,18 +12,18 @@ A [serverless](https://serverless.com) plugin to store output from your AWS Clou
 ### Install
 
 ```bash
-$ > yarn add serverless-stack-output
+$ > yarn add serverless-discovery-plugin
 ```
 
 ```bash
-$ > npm install serverless-stack-output
+$ > npm install serverless-discovery-plugin
 ```
 
 ### Configuration
 
 ```yaml
 plugins:
-  - serverless-stack-output
+  - serverless-discovery-plugin
 
 custom:
   output:
@@ -67,7 +67,7 @@ The plugins works fine with serverless functions, as well as when using custom C
 service: sls-stack-output-example
 
 plugins:
-  - serverless-stack-output
+  - serverless-discovery-plugin
 
 package:
   exclude:

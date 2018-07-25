@@ -1,6 +1,7 @@
 # The MIT License (MIT)
 
-Copyright © 2017 Sebastian Müller <mail@sbstjn.com>
+Copyright © 2018 Andrew Regier <aregier@regiernet.com>
+Parent work (https://github.com/sbstjn/serverless-stack-output) Copyright © 2017 Sebastian Müller <mail@sbstjn.com>
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
