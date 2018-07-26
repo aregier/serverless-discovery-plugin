@@ -12,7 +12,8 @@ export default class StackOutputPlugin {
     private options: Serverless.Options
   ) {
     this.hooks = {
-      'after:deploy:deploy': this.process.bind(this)
+      'after:deploy:deploy': this.register.bind(this),
+      'before:remove:remove': this.deregister.bind(this)
     }
 
     this.output = this.serverless.service.custom.output
@@ -136,20 +137,31 @@ export default class StackOutputPlugin {
     assert(this.options && !this.options.noDeploy, 'Skipping deployment with --noDeploy flag')
   }
 
-  private process () {
-    Promise.resolve()
-    .then(
-      () => this.validate()
-    ).then(
-      () => this.fetch()
-    ).then(
-      (res) => this.beautify(res)
-    ).then(
-      (res) => this.handle(res)
-    ).catch(
-      (err) => this.serverless.cli.log(
-        util.format('Cannot process Stack Output: %s!', err.message)
-      )
-    )
+  private async register () {
+    this.serverless.cli.log('Registering service endpoint');
+    try {
+      await this.validate();
+      let rawData = await this.fetch();
+      let beautifulData = await this.beautify(rawData);
+      await this.handle(beautifulData);        
+    }
+    catch (Error) {
+      this.serverless.cli.log(
+        util.format('Cannot process Stack Output: %s!', Error.message));
+    }
+  }
+
+  private async deregister () {
+    this.serverless.cli.log('De-registering service endpoint');
+    try {
+      await this.validate();
+      let rawData = await this.fetch();
+      let beautifulData = await this.beautify(rawData);
+      await this.handle(beautifulData);        
+    }
+    catch (Error) {
+      this.serverless.cli.log(
+        util.format('Cannot process Stack Output: %s!', Error.message));
+    }
   }
 }
