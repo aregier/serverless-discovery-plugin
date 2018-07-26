@@ -141,8 +141,8 @@ export default class StackOutputPlugin {
     this.serverless.cli.log('Registering service endpoint');
     try {
       await this.validate();
-      let rawData = await this.fetch();
-      let beautifulData = await this.beautify(rawData);
+      const rawData = await this.fetch();
+      const beautifulData = await this.beautify(rawData);
       await this.handle(beautifulData);        
     }
     catch (Error) {
@@ -155,8 +155,8 @@ export default class StackOutputPlugin {
     this.serverless.cli.log('De-registering service endpoint');
     try {
       await this.validate();
-      let rawData = await this.fetch();
-      let beautifulData = await this.beautify(rawData);
+      const rawData = await this.fetch();
+      const beautifulData = await this.beautify(rawData);
       await this.handle(beautifulData);        
     }
     catch (Error) {
