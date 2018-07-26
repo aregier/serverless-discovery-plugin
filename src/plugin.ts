@@ -138,30 +138,28 @@ export default class StackOutputPlugin {
   }
 
   private async register () {
-    this.serverless.cli.log('Registering service endpoint');
+    this.serverless.cli.log('Registering service endpoint')
     try {
-      await this.validate();
-      const rawData = await this.fetch();
-      const beautifulData = await this.beautify(rawData);
-      await this.handle(beautifulData);        
-    }
-    catch (Error) {
+      await this.validate()
+      const rawData = await this.fetch()
+      const beautifulData = await this.beautify(rawData)
+      await this.handle(beautifulData)
+    } catch (Error) {
       this.serverless.cli.log(
-        util.format('Cannot process Stack Output: %s!', Error.message));
+        util.format('Cannot process Stack Output: %s!', Error.message))
     }
   }
 
   private async deregister () {
-    this.serverless.cli.log('De-registering service endpoint');
+    this.serverless.cli.log('De-registering service endpoint')
     try {
-      await this.validate();
-      const rawData = await this.fetch();
-      const beautifulData = await this.beautify(rawData);
-      await this.handle(beautifulData);        
-    }
-    catch (Error) {
+      await this.validate()
+      const rawData = await this.fetch()
+      const beautifulData = await this.beautify(rawData)
+      await this.handle(beautifulData)
+    } catch (Error) {
       this.serverless.cli.log(
-        util.format('Cannot process Stack Output: %s!', Error.message));
+        util.format('Cannot process Stack Output: %s!', Error.message))
     }
   }
 }
