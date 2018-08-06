@@ -34,6 +34,7 @@
     "discovery"
   ],
   "dependencies": {
+    "@adastradev/serverless-discovery-sdk-js": "file:../../astradev/serverless-discovery-sdk-js",
     "tomlify-j0.4": "^2.0.0",
     "yamljs": "^0.3.0"
   },

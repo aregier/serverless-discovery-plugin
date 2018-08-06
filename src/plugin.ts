@@ -2,10 +2,11 @@ import * as assert from 'assert'
 import * as util from 'util'
 
 import StackOutputFile from './file'
+import { DiscoveryServiceApi, ServiceApiModel } from '@adastradev/serverless-discovery-sdk-js'
 
 export default class StackOutputPlugin {
   public hooks: {}
-  private output: DiscoveryConfig
+  private discoveryConfig: DiscoveryConfig
 
   constructor (
     private serverless: Serverless,
@@ -16,19 +17,19 @@ export default class StackOutputPlugin {
       'before:remove:remove': this.remove.bind(this)
     }
 
-    this.output = this.serverless.service.custom.discovery
+    this.discoveryConfig = this.serverless.service.custom.discovery
   }
 
   get file () {
-    return this.getConfig('file')
+    return this.getConfigPathValue('file')
   }
 
   get deployHandler () {
-    return this.getConfig('deployHandler')
+    return this.getConfigPathValue('deployHandler')
   }
 
   get removeHandler () {
-    return this.getConfig('removeHandler')
+    return this.getConfigPathValue('removeHandler')
   }
 
   get discoveryServiceUri () {
@@ -43,7 +44,7 @@ export default class StackOutputPlugin {
   }
 
   private hasConfig (key: string) {
-    return !!this.output && !!this.output[key]
+    return !!this.discoveryConfig && !!this.discoveryConfig[key]
   }
 
   private hasDeployHandler () {
@@ -62,11 +63,15 @@ export default class StackOutputPlugin {
     return this.hasConfig('file')
   }
 
-  private getConfig (key: string) {
+  private getConfigPathValue (key: string) {
     return util.format('%s/%s',
       this.serverless.config.servicePath,
-      this.output[key]
+      this.discoveryConfig[key]
     )
+  }
+
+  private getConfig (key: string) {
+    return this.discoveryConfig[key]
   }
 
   private callHandler (handler: string, data: object) {
@@ -130,13 +135,33 @@ export default class StackOutputPlugin {
   }
 
   private register(data: object) {
-    this.serverless.cli.log('Registering service endpoint')
-    return Promise.resolve()
+    return this.hasDiscoveryServiceUri() ? (
+      new Promise<any>(async (resolve, reject) => {
+        this.serverless.cli.log('Registering service endpoint with service: ' + this.discoveryServiceUri)
+
+        // TODO: configurable region - assumed to be in same region for now
+        const discoveryApi = new DiscoveryServiceApi(this.discoveryServiceUri,
+          this.serverless.getProvider('aws').getRegion(),
+          { type: 'None' })
+
+        const service: ServiceApiModel = {
+            ServiceName: this.serverless.service.getServiceName(),
+            ServiceURL: data['ServiceEndpoint'], // tslint:disable-line
+            StageName: this.serverless.getProvider('aws').getStage()
+        }
+
+        const result = await discoveryApi.createService(service)
+        return resolve(result)
+      })
+    ) : Promise.resolve()
   }
 
   private deregister(data: object) {
-    this.serverless.cli.log('De-registering service endpoint')
-    return Promise.resolve()
+    return this.hasDiscoveryServiceUri() ? (
+      new Promise<any>((resolve, reject) => {
+        this.serverless.cli.log('De-registering service endpoint')
+      })
+    ) : Promise.resolve()
   }
 
   private handleDeployHandler(data: object) {
@@ -171,7 +196,7 @@ export default class StackOutputPlugin {
         data
       ).then(
         () => this.serverless.cli.log(
-          util.format('Stack Output saved to file: %s', this.output.file)
+          util.format('Stack Output saved to file: %s', this.discoveryConfig.file)
         )
       )
     ) : Promise.resolve()

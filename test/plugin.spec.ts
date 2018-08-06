@@ -42,7 +42,7 @@ describe('Plugin', () => {
         }
       }
 
-      const test = new Plugin(config, { serverless: true }, { options: true })
+      const test = new Plugin(config, {})
 
       expect(test.hasDeployHandler()).toBe(true)
       expect(test.hasRemoveHandler()).toBe(false)
@@ -74,7 +74,7 @@ describe('Plugin', () => {
         }
       }
 
-      const test = new Plugin(config, { serverless: true }, { options: true })
+      const test = new Plugin(config, {})
 
       expect(test.hasDeployHandler()).toBe(false)
       expect(test.hasRemoveHandler()).toBe(true)
@@ -106,7 +106,7 @@ describe('Plugin', () => {
         }
       }
 
-      const test = new Plugin(config, { serverless: true }, { options: true })
+      const test = new Plugin(config, {})
 
       expect(test.hasDeployHandler()).toBe(false)
       expect(test.hasRemoveHandler()).toBe(false)
@@ -116,7 +116,6 @@ describe('Plugin', () => {
       expect(test.discoveryServiceUri).toContain('https://abcdefghij.execute-api.us-east-1.amazonaws.com/dev')
     })
   })
-
 
   describe('Configuration', () => {
     it('hasFile', () => {
@@ -139,7 +138,7 @@ describe('Plugin', () => {
         }
       }
 
-      const test = new Plugin(config)
+      const test = new Plugin(config, {})
 
       expect(test.hasDeployHandler()).toBe(false)
       expect(test.hasRemoveHandler()).toBe(false)
