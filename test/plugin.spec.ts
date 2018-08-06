@@ -32,8 +32,8 @@ describe('Plugin', () => {
         region: 'us-east-1',
         service: {
           custom: {
-            output: {
-              handler: 'foo/bar.baz'
+            discovery: {
+              deployHandler: 'foo/bar.baz'
             }
           },
           provider: {
@@ -44,10 +44,10 @@ describe('Plugin', () => {
 
       const test = new Plugin(config, { serverless: true }, { options: true })
 
-      expect(test.hasHandler()).toBe(true)
+      expect(test.hasDeployHandler()).toBe(true)
       expect(test.hasFile()).toBe(false)
 
-      expect(test.handler).toContain('foo/bar.baz')
+      expect(test.deployHandler).toContain('foo/bar.baz')
     })
   })
 
@@ -62,7 +62,7 @@ describe('Plugin', () => {
         region: 'us-east-1',
         service: {
           custom: {
-            output: {
+            discovery: {
               file: 'foo/bar.toml'
             }
           },
@@ -74,7 +74,7 @@ describe('Plugin', () => {
 
       const test = new Plugin(config)
 
-      expect(test.hasHandler()).toBe(false)
+      expect(test.hasDeployHandler()).toBe(false)
       expect(test.hasFile()).toBe(true)
 
       expect(test.file).toContain('foo/bar.toml')

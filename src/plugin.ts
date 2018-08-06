@@ -5,26 +5,26 @@ import StackOutputFile from './file'
 
 export default class StackOutputPlugin {
   public hooks: {}
-  private output: OutputConfig
+  private output: DiscoveryConfig
 
   constructor (
     private serverless: Serverless,
     private options: Serverless.Options
   ) {
     this.hooks = {
-      'after:deploy:deploy': this.register.bind(this),
-      'before:remove:remove': this.deregister.bind(this)
+      'after:deploy:deploy': this.deploy.bind(this),
+      'before:remove:remove': this.remove.bind(this)
     }
 
-    this.output = this.serverless.service.custom.output
+    this.output = this.serverless.service.custom.discovery
   }
 
   get file () {
     return this.getConfig('file')
   }
 
-  get handler () {
-    return this.getConfig('handler')
+  get deployHandler () {
+    return this.getConfig('deployHandler')
   }
 
   get stackName () {
@@ -38,8 +38,8 @@ export default class StackOutputPlugin {
     return !!this.output && !!this.output[key]
   }
 
-  private hasHandler () {
-    return this.hasConfig('handler')
+  private hasDeployHandler () {
+    return this.hasConfig('deployHandler')
   }
 
   private hasFile () {
@@ -53,8 +53,8 @@ export default class StackOutputPlugin {
     )
   }
 
-  private callHandler (data: object) {
-    const splits = this.handler.split('.')
+  private callHandler (handler: string, data: object) {
+    const splits = handler.split('.')
     const func = splits.pop() || ''
     const file = splits.join('.')
 
@@ -94,22 +94,43 @@ export default class StackOutputPlugin {
     )
   }
 
-  private handle (data: object) {
+  private handleDeploy (data: object) {
     return Promise.all(
       [
-        this.handleHandler(data),
-        this.handleFile(data)
+        this.handleHandler(this.deployHandler, data),
+        this.handleFile(data),
+        this.register(data)
       ]
     )
   }
 
-  private handleHandler(data: object) {
-    return this.hasHandler() ? (
+  private handleRemove (data: object) {
+    return Promise.all(
+      [
+        this.handleHandler(this.deployHandler, data),
+        this.deregister(data)
+      ]
+    )
+  }
+
+  private register(data: object) {
+    this.serverless.cli.log('Registering service endpoint')
+    return Promise.resolve()
+  }
+
+  private deregister(data: object) {
+    this.serverless.cli.log('De-registering service endpoint')
+    return Promise.resolve()
+  }
+
+  private handleHandler(handler: string, data: object) {
+    return this.hasDeployHandler() ? (
       this.callHandler(
+        this.deployHandler,
         data
       ).then(
         () => this.serverless.cli.log(
-          util.format('Stack Output processed with handler: %s', this.output.handler)
+          util.format('Stack Output processed with handler: %s', handler)
         )
       )
     ) : Promise.resolve()
@@ -137,26 +158,24 @@ export default class StackOutputPlugin {
     assert(this.options && !this.options.noDeploy, 'Skipping deployment with --noDeploy flag')
   }
 
-  private async register () {
-    this.serverless.cli.log('Registering service endpoint')
+  private async deploy () {
     try {
       await this.validate()
       const rawData = await this.fetch()
       const beautifulData = await this.beautify(rawData)
-      await this.handle(beautifulData)
+      await this.handleDeploy(beautifulData)
     } catch (Error) {
       this.serverless.cli.log(
         util.format('Cannot process Stack Output: %s!', Error.message))
     }
   }
 
-  private async deregister () {
-    this.serverless.cli.log('De-registering service endpoint')
+  private async remove () {
     try {
       await this.validate()
       const rawData = await this.fetch()
       const beautifulData = await this.beautify(rawData)
-      await this.handle(beautifulData)
+      await this.handleRemove(beautifulData)
     } catch (Error) {
       this.serverless.cli.log(
         util.format('Cannot process Stack Output: %s!', Error.message))
