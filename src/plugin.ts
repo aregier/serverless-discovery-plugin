@@ -27,6 +27,14 @@ export default class StackOutputPlugin {
     return this.getConfig('deployHandler')
   }
 
+  get removeHandler () {
+    return this.getConfig('removeHandler')
+  }
+
+  get discoveryServiceUri () {
+    return this.getConfig('discoveryServiceUri')
+  }
+
   get stackName () {
     return util.format('%s-%s',
       this.serverless.service.getServiceName(),
@@ -40,6 +48,14 @@ export default class StackOutputPlugin {
 
   private hasDeployHandler () {
     return this.hasConfig('deployHandler')
+  }
+
+  private hasRemoveHandler () {
+    return this.hasConfig('removeHandler')
+  }
+
+  private hasDiscoveryServiceUri () {
+    return this.hasConfig('discoveryServiceUri')
   }
 
   private hasFile () {
@@ -97,9 +113,9 @@ export default class StackOutputPlugin {
   private handleDeploy (data: object) {
     return Promise.all(
       [
-        this.handleHandler(this.deployHandler, data),
-        this.handleFile(data),
-        this.register(data)
+        this.register(data),
+        this.handleDeployHandler(data),
+        this.handleFile(data)
       ]
     )
   }
@@ -107,8 +123,8 @@ export default class StackOutputPlugin {
   private handleRemove (data: object) {
     return Promise.all(
       [
-        this.handleHandler(this.deployHandler, data),
-        this.deregister(data)
+        this.deregister(data),
+        this.handleRemoveHandler(data)
       ]
     )
   }
@@ -123,14 +139,27 @@ export default class StackOutputPlugin {
     return Promise.resolve()
   }
 
-  private handleHandler(handler: string, data: object) {
+  private handleDeployHandler(data: object) {
     return this.hasDeployHandler() ? (
       this.callHandler(
         this.deployHandler,
         data
       ).then(
         () => this.serverless.cli.log(
-          util.format('Stack Output processed with handler: %s', handler)
+          util.format('Stack Output processed with handler: %s', this.deployHandler)
+        )
+      )
+    ) : Promise.resolve()
+  }
+
+  private handleRemoveHandler(data: object) {
+    return this.hasRemoveHandler() ? (
+      this.callHandler(
+        this.removeHandler,
+        data
+      ).then(
+        () => this.serverless.cli.log(
+          util.format('Stack Output processed with handler: %s', this.removeHandler)
         )
       )
     ) : Promise.resolve()
