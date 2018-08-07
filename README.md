@@ -5,7 +5,7 @@
 [![CircleCI](https://img.shields.io/circleci/project/github/aregier/serverless-discovery-plugin.svg)](https://circleci.com/gh/aregier/serverless-discovery-plugin)
 [![Coveralls](https://img.shields.io/coveralls/aregier/serverless-discovery-plugin.svg)](https://coveralls.io/github/aregier/serverless-discovery-plugin)
 
-A [serverless](https://serverless.com) plugin to store output from your AWS CloudFormation Stack in JSON/YAML/TOML files, or to pass the output to a JavaScript function for further processing.
+A [serverless](https://serverless.com) plugin to register AWS micro-service endpoints with a discovery service at `serverless deploy` or `serverless remove` time, or to pass the output to a JavaScript function for further processing.
 
 ## Usage
 
@@ -76,8 +76,8 @@ package:
     - node_modules/**
 
 custom:
-  output:
-    handler: scripts/output.handler
+  discovery:
+    deployHandler: scripts/output.handler
     file: .build/stack.toml
 
 provider:
