@@ -2,7 +2,7 @@ import * as assert from 'assert'
 import * as util from 'util'
 
 import StackOutputFile from './file'
-import { DiscoveryServiceApi, ServiceApiModel } from '@adastradev/serverless-discovery-sdk-js'
+import { DiscoveryServiceApi, ServiceApiModel } from '@adastradev/serverless-discovery-sdk'
 
 export default class ServiceDiscoveryPlugin {
   public hooks: {}

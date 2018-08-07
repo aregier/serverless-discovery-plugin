@@ -1,2 +1,4 @@
-!dist
-!package.json
+source
+test
+config.ts
+.vscode
