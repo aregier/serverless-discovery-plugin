@@ -4,7 +4,7 @@ import * as util from 'util'
 import StackOutputFile from './file'
 import { DiscoveryServiceApi, ServiceApiModel } from '@adastradev/serverless-discovery-sdk-js'
 
-export default class StackOutputPlugin {
+export default class ServiceDiscoveryPlugin {
   public hooks: {}
   private discoveryConfig: DiscoveryConfig
 
@@ -139,7 +139,6 @@ export default class StackOutputPlugin {
       new Promise<any>(async (resolve, reject) => {
         this.serverless.cli.log('Registering service endpoint with service: ' + this.discoveryServiceUri)
 
-        // TODO: configurable region - assumed to be in same region for now
         const discoveryApi = new DiscoveryServiceApi(this.discoveryServiceUri,
           this.serverless.getProvider('aws').getRegion(),
           { type: 'None' })
@@ -158,8 +157,26 @@ export default class StackOutputPlugin {
 
   private deregister(data: object) {
     return this.hasDiscoveryServiceUri() ? (
-      new Promise<any>((resolve, reject) => {
-        this.serverless.cli.log('De-registering service endpoint')
+      new Promise<any>(async (resolve, reject) => {
+        this.serverless.cli.log('De-registering service endpoint with service: ' + this.discoveryServiceUri)
+        const discoveryApi = new DiscoveryServiceApi(this.discoveryServiceUri,
+          this.serverless.getProvider('aws').getRegion(),
+          { type: 'None' })
+
+        const response = await discoveryApi.lookupService(
+          this.serverless.service.getServiceName(),
+          this.serverless.getProvider('aws').getStage()
+        )
+
+        const existingService: ServiceApiModel = response.data[0]
+        if (existingService !== undefined && existingService.ServiceID !== undefined) {
+          await discoveryApi.deleteService(existingService.ServiceID)
+          this.serverless.cli.log('Successfully de-registered service')
+          return resolve(existingService.ServiceID)
+        } else {
+          this.serverless.cli.log('No service registration record was found for this service name and stage')
+          return reject(Error('No service registration record was found for this service name and stage'))
+        }
       })
     ) : Promise.resolve()
   }
