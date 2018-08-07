@@ -41,7 +41,7 @@ declare interface Serverless {
     getAllFunctions(): string[]
     
     custom: {
-      output: OutputConfig
+      discovery: DiscoveryConfig
     }
 
     provider: {

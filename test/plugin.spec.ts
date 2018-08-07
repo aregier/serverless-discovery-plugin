@@ -22,7 +22,7 @@ describe('Plugin', () => {
   })
 
   describe('Configuration', () => {
-    it('hasHandler', () => {
+    it('hasDeployHandler', () => {
       const config = {
         cli: { log: () => null },
         config: {
@@ -32,8 +32,8 @@ describe('Plugin', () => {
         region: 'us-east-1',
         service: {
           custom: {
-            output: {
-              handler: 'foo/bar.baz'
+            discovery: {
+              deployHandler: 'foo/bar.baz'
             }
           },
           provider: {
@@ -42,12 +42,78 @@ describe('Plugin', () => {
         }
       }
 
-      const test = new Plugin(config, { serverless: true }, { options: true })
+      const test = new Plugin(config, {})
 
-      expect(test.hasHandler()).toBe(true)
+      expect(test.hasDeployHandler()).toBe(true)
+      expect(test.hasRemoveHandler()).toBe(false)
       expect(test.hasFile()).toBe(false)
+      expect(test.hasDiscoveryServiceUri()).toBe(false)
 
-      expect(test.handler).toContain('foo/bar.baz')
+      expect(test.deployHandler).toContain('foo/bar.baz')
+    })
+  })
+
+  describe('Configuration', () => {
+    it('hasRemoveHandler', () => {
+      const config = {
+        cli: { log: () => null },
+        config: {
+          servicePath: ''
+        },
+        getProvider,
+        region: 'us-east-1',
+        service: {
+          custom: {
+            discovery: {
+              removeHandler: 'foo/bar.baz'
+            }
+          },
+          provider: {
+            name: 'aws'
+          }
+        }
+      }
+
+      const test = new Plugin(config, {})
+
+      expect(test.hasDeployHandler()).toBe(false)
+      expect(test.hasRemoveHandler()).toBe(true)
+      expect(test.hasFile()).toBe(false)
+      expect(test.hasDiscoveryServiceUri()).toBe(false)
+
+      expect(test.removeHandler).toContain('foo/bar.baz')
+    })
+  })
+
+  describe('Configuration', () => {
+    it('hasDiscoveryServiceUri', () => {
+      const config = {
+        cli: { log: () => null },
+        config: {
+          servicePath: ''
+        },
+        getProvider,
+        region: 'us-east-1',
+        service: {
+          custom: {
+            discovery: {
+              discoveryServiceUri: 'https://abcdefghij.execute-api.us-east-1.amazonaws.com/dev'
+            }
+          },
+          provider: {
+            name: 'aws'
+          }
+        }
+      }
+
+      const test = new Plugin(config, {})
+
+      expect(test.hasDeployHandler()).toBe(false)
+      expect(test.hasRemoveHandler()).toBe(false)
+      expect(test.hasFile()).toBe(false)
+      expect(test.hasDiscoveryServiceUri()).toBe(true)
+
+      expect(test.discoveryServiceUri).toContain('https://abcdefghij.execute-api.us-east-1.amazonaws.com/dev')
     })
   })
 
@@ -62,7 +128,7 @@ describe('Plugin', () => {
         region: 'us-east-1',
         service: {
           custom: {
-            output: {
+            discovery: {
               file: 'foo/bar.toml'
             }
           },
@@ -72,10 +138,12 @@ describe('Plugin', () => {
         }
       }
 
-      const test = new Plugin(config)
+      const test = new Plugin(config, {})
 
-      expect(test.hasHandler()).toBe(false)
+      expect(test.hasDeployHandler()).toBe(false)
+      expect(test.hasRemoveHandler()).toBe(false)
       expect(test.hasFile()).toBe(true)
+      expect(test.hasDiscoveryServiceUri()).toBe(false)
 
       expect(test.file).toContain('foo/bar.toml')
     })

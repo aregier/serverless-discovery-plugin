@@ -1,1 +1,4 @@
-!dist
+src
+test
+config.ts
+.vscode

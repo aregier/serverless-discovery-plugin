@@ -11,7 +11,10 @@ declare interface StackDescriptionList {
   Stacks: StackDescription[]
 }
 
-declare interface OutputConfig {
-  handler: string
+declare interface DiscoveryConfig {
+  discoveryServiceUri: string
+  // TODO: IAM credentials
+  deployHandler: string
+  removeHandler: string
   file: string
 }

@@ -26,8 +26,10 @@ plugins:
   - serverless-discovery-plugin
 
 custom:
-  output:
-    handler: scripts/output.handler # Same syntax as you already know
+  discovery:
+    discoveryServiceUri: 'https://abcdefghij.execute-api.us-east-1.amazonaws.com/dev'
+    deployHandler: scripts/deploy.handler # Same syntax as you already know
+    removeHandler: scripts/remove.handler # Same syntax as you already know
     file: .build/stack.toml # toml, yaml, yml, and json format is available
 ```
 
