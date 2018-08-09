@@ -2,7 +2,9 @@ import * as assert from 'assert'
 import * as util from 'util'
 
 import StackOutputFile from './file'
-import { DiscoveryServiceApi, ServiceApiModel } from '@adastradev/serverless-discovery-sdk'
+import { DiscoveryServiceApi,
+  IAMCredentialsEnvironmentVariables,
+  ServiceApiModel } from '@adastradev/serverless-discovery-sdk'
 
 export default class ServiceDiscoveryPlugin {
   public hooks: {}
@@ -141,7 +143,7 @@ export default class ServiceDiscoveryPlugin {
 
         const discoveryApi = new DiscoveryServiceApi(this.discoveryServiceUri,
           this.serverless.getProvider('aws').getRegion(),
-          { type: 'None' })
+          new IAMCredentialsEnvironmentVariables())
 
         const service: ServiceApiModel = {
             ServiceName: this.serverless.service.getServiceName(),
@@ -161,7 +163,7 @@ export default class ServiceDiscoveryPlugin {
         this.serverless.cli.log('De-registering service endpoint with service: ' + this.discoveryServiceUri)
         const discoveryApi = new DiscoveryServiceApi(this.discoveryServiceUri,
           this.serverless.getProvider('aws').getRegion(),
-          { type: 'None' })
+          new IAMCredentialsEnvironmentVariables())
 
         const response = await discoveryApi.lookupService(
           this.serverless.service.getServiceName(),
