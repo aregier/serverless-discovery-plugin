@@ -35,7 +35,7 @@ custom:
 
 ### Handler
 
-Based on the configuration above the plugin will search for a file `scripts/output.js` with the following content:
+Based on the configuration above the plugin will search for a file `scripts/deploy.js` with the following content:
 
 ```js
 function handler (data, serverless, options) {
@@ -77,6 +77,7 @@ package:
 
 custom:
   discovery:
+    discoveryServiceUri: 'https://DiscoveryServiceID.execute-api.us-east-1.amazonaws.com/prod'
     deployHandler: scripts/output.handler
     file: .build/stack.toml
 
@@ -129,6 +130,24 @@ resources:
 ```
 
 ### Stack Output
+
+#### Console
+```sh
+Serverless: Stack update finished...
+Service Information
+service: sls-stack-output-example
+stage: dev
+region: us-east-1
+stack: sls-stack-output-example-dev
+api keys:
+  None
+endpoints:
+  GET - https://APIGatewayID.execute-api.us-east-1.amazonaws.com/dev/example
+...
+-------------------
+Serverless: Registering service endpoint with service: https://DiscoveryServiceID.execute-api.us-east-1.amazonaws.com/prod
+Serverless: Stack Output saved to file: test/system/lib/outputs.json
+```
 
 #### TOML
 

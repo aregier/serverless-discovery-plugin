@@ -43,23 +43,23 @@ export default class ServiceDiscoveryPlugin {
     )
   }
 
-  private hasConfig (key: string) {
+  public hasConfig (key: string) {
     return !!this.discoveryConfig && !!this.discoveryConfig[key]
   }
 
-  private hasDeployHandler () {
+  public hasDeployHandler () {
     return this.hasConfig('deployHandler')
   }
 
-  private hasRemoveHandler () {
+  public hasRemoveHandler () {
     return this.hasConfig('removeHandler')
   }
 
-  private hasDiscoveryServiceUri () {
+  public hasDiscoveryServiceUri () {
     return this.hasConfig('discoveryServiceUri')
   }
 
-  private hasFile () {
+  public hasFile () {
     return this.hasConfig('file')
   }
 
@@ -175,7 +175,7 @@ export default class ServiceDiscoveryPlugin {
           return resolve(existingService.ServiceID)
         } else {
           this.serverless.cli.log('No service registration record was found for this service name and stage')
-          return reject(Error('No service registration record was found for this service name and stage'))
+          return resolve(null)
         }
       })
     ) : Promise.resolve()
@@ -237,7 +237,7 @@ export default class ServiceDiscoveryPlugin {
       await this.handleDeploy(beautifulData)
     } catch (Error) {
       this.serverless.cli.log(
-        util.format('Cannot process Stack Output: %s!', Error.message))
+        util.format('Cannot process Discovery Plugin: %s!', Error.message))
     }
   }
 
@@ -249,7 +249,7 @@ export default class ServiceDiscoveryPlugin {
       await this.handleRemove(beautifulData)
     } catch (Error) {
       this.serverless.cli.log(
-        util.format('Cannot process Stack Output: %s!', Error.message))
+        util.format('Cannot process Discovery Plugin: %s!', Error.message))
     }
   }
 }
