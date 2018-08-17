@@ -40,17 +40,7 @@ export default class ServiceDiscoveryPlugin {
   }
 
   get stackName () {
-    // Check for an explicitly assigned stack name
-    const explicitStackName = this.serverless.getProvider('aws').stackName
-    if (explicitStackName && explicitStackName.length > 0) {
-      return explicitStackName
-    }
-
-    // default the stack name consistently with the serverless framework
-    return util.format('%s-%s',
-      this.serverless.service.getServiceName(),
-      this.serverless.getProvider('aws').getStage()
-    )
+    return this.serverless.getProvider('aws').naming.getStackName()
   }
 
   public hasConfig (key: string) {
