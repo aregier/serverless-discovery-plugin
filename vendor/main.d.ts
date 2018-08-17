@@ -13,7 +13,8 @@ declare interface StackDescriptionList {
 
 declare interface DiscoveryConfig {
   discoveryServiceUri: string
-  // TODO: IAM credentials
+  accessKeyId?: string
+  secretAccessKey?: string
   deployHandler: string
   removeHandler: string
   file: string

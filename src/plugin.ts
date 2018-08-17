@@ -1,10 +1,11 @@
 import * as assert from 'assert'
 import * as util from 'util'
 
-import StackOutputFile from './file'
 import { DiscoveryServiceApi,
-  IAMCredentialsEnvironmentVariables,
   ServiceApiModel } from '@adastradev/serverless-discovery-sdk'
+
+import StackOutputFile from './file'
+import { PluginIAMCredentials } from './PluginIAMCredentials'
 
 export default class ServiceDiscoveryPlugin {
   public hooks: {}
@@ -39,6 +40,13 @@ export default class ServiceDiscoveryPlugin {
   }
 
   get stackName () {
+    // Check for an explicitly assigned stack name
+    const explicitStackName = this.serverless.getProvider('aws').stackName
+    if (explicitStackName && explicitStackName.length > 0) {
+      return explicitStackName
+    }
+
+    // default the stack name consistently with the serverless framework
     return util.format('%s-%s',
       this.serverless.service.getServiceName(),
       this.serverless.getProvider('aws').getStage()
@@ -143,7 +151,7 @@ export default class ServiceDiscoveryPlugin {
 
         const discoveryApi = new DiscoveryServiceApi(this.discoveryServiceUri,
           this.serverless.getProvider('aws').getRegion(),
-          new IAMCredentialsEnvironmentVariables())
+          new PluginIAMCredentials(this.discoveryConfig))
 
         const service: ServiceApiModel = {
             ServiceName: this.serverless.service.getServiceName(),
@@ -163,7 +171,7 @@ export default class ServiceDiscoveryPlugin {
         this.serverless.cli.log('De-registering service endpoint with service: ' + this.discoveryServiceUri)
         const discoveryApi = new DiscoveryServiceApi(this.discoveryServiceUri,
           this.serverless.getProvider('aws').getRegion(),
-          new IAMCredentialsEnvironmentVariables())
+          new PluginIAMCredentials(this.discoveryConfig))
 
         const response = await discoveryApi.lookupService(
           this.serverless.service.getServiceName(),

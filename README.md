@@ -28,10 +28,15 @@ plugins:
 custom:
   discovery:
     discoveryServiceUri: 'https://abcdefghij.execute-api.us-east-1.amazonaws.com/dev'
+    accessKeyId: '${env:DISCOVERY_KEY_ID}' # optional, if separate keys are needed
+    secretAccessKey: '${env:DISCOVERY_SECRET_ACCESS_KEY}' # optional, if separate keys are needed
     deployHandler: scripts/deploy.handler # Same syntax as you already know
     removeHandler: scripts/remove.handler # Same syntax as you already know
     file: .build/stack.toml # toml, yaml, yml, and json format is available
 ```
+
+### Authentication
+If the service under development is deployed into the same account as the discovery service, `serverless-discovery-plugin` will use the same credentials from AWS environment variables at pipeline run time to authenticate to the discovery service for registration purposes. Otherwise, you can designate explicit credentials that should be used in the configuration.
 
 ### Handler
 
