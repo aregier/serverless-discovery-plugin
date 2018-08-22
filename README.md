@@ -3,7 +3,7 @@
 [![NPM](https://nodei.co/npm/serverless-discovery-plugin.png)](https://nodei.co/npm/serverless-discovery-plugin/)
 
 [![npm](https://img.shields.io/npm/v/serverless-discovery-plugin.svg)](https://www.npmjs.com/package/serverless-discovery-plugin)
-[![license](https://img.shields.io/github/license/aregier/serverless-discovery-plugin.svg)](https://github.com/aregier/serverless-discovery-plugin/blob/master/LICENSE.md)
+[![license](https://img.shields.io/npm/l/serverless-discovery-plugin.svg)](https://www.npmjs.com/package/serverless-discovery-plugin)
 [![CircleCI](https://img.shields.io/circleci/project/github/aregier/serverless-discovery-plugin.svg)](https://circleci.com/gh/aregier/serverless-discovery-plugin)
 [![Coveralls](https://img.shields.io/coveralls/aregier/serverless-discovery-plugin.svg)](https://coveralls.io/github/aregier/serverless-discovery-plugin)
 
