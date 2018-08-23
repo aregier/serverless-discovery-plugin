@@ -9,6 +9,8 @@
 
 A [serverless](https://serverless.com) plugin to register AWS micro-service endpoints with a discovery service at `serverless deploy` or `serverless remove` time, or to pass the output to a JavaScript function for further processing.
 
+See the [Ad Astra Serverless Discovery](https://adastradev.github.io/serverless-discovery/) project for more information.
+
 ## Usage
 
 ### Install
