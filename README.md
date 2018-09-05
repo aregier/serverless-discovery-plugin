@@ -32,8 +32,8 @@ plugins:
 custom:
   discovery:
     discoveryServiceUri: 'https://abcdefghij.execute-api.us-east-1.amazonaws.com/dev'
-    accessKeyId: '${env:DISCOVERY_KEY_ID}' # optional, if separate keys are needed
-    secretAccessKey: '${env:DISCOVERY_SECRET_ACCESS_KEY}' # optional, if separate keys are needed
+    accessKeyId: ${env:DISCOVERY_KEY_ID} # optional, if separate keys are needed
+    secretAccessKey: ${env:DISCOVERY_SECRET_ACCESS_KEY} # optional, if separate keys are needed
     deployHandler: scripts/deploy.handler # Same syntax as you already know
     removeHandler: scripts/remove.handler # Same syntax as you already know
     file: .build/stack.toml # toml, yaml, yml, and json format is available
