@@ -1,7 +1,7 @@
 {
   "name": "serverless-discovery-plugin",
   "description": "Serverless plugin to register/de-register endpoints upon deploy and remove command hooks",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "license": "MIT",
   "author": "Andrew Regier <aregier@regiernet.com>",
   "contributors": [

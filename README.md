@@ -47,7 +47,8 @@ If the service under development is deployed into the same account as the discov
 Based on the configuration above the plugin will search for a file `scripts/deploy.js` with the following content:
 
 ```js
-function handler (data, serverless, options) {
+// async declaration here implicitly returns a Promise<void>
+async function handler (data, serverless, options) {
   console.log('Received Stack Output', data)
 }
 
