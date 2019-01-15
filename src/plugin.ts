@@ -79,13 +79,11 @@ export default class ServiceDiscoveryPlugin {
     const func = splits.pop() || ''
     const file = splits.join('.')
 
-    require(file)[func](
+    return require(file)[func](
       data,
       this.serverless,
       this.options
     )
-
-    return Promise.resolve()
   }
 
   private saveFile (data: object) {
