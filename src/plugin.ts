@@ -144,7 +144,9 @@ export default class ServiceDiscoveryPlugin {
         const service: ServiceApiModel = {
             ServiceName: this.serverless.service.getServiceName(),
             ServiceURL: data['ServiceEndpoint'], // tslint:disable-line
-            StageName: this.serverless.getProvider('aws').getStage()
+            StageName: this.serverless.getProvider('aws').getStage(),
+            Version: this.getConfig('version'),
+            ExternalID: this.getConfig('externalID')
         }
 
         const result = await discoveryApi.createService(service)
