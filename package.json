@@ -34,7 +34,7 @@
     "discovery"
   ],
   "dependencies": {
-    "@adastradev/serverless-discovery-sdk": "0.1.0-beta3",
+    "@adastradev/serverless-discovery-sdk": "^1.0.0",
     "tomlify-j0.4": "^2.0.0",
     "yamljs": "^0.3.0"
   },
