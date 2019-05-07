@@ -37,6 +37,8 @@ custom:
     deployHandler: scripts/deploy.handler # Same syntax as you already know
     removeHandler: scripts/remove.handler # Same syntax as you already know
     file: .build/stack.toml # toml, yaml, yml, and json format is available
+    version: 1.0.0 # you could alternatively source this from package.json, etc.
+    externalID: An alternative identifier/stage name for your service deployment
 ```
 
 ### Authentication

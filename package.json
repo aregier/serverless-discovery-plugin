@@ -1,7 +1,7 @@
 {
-  "name": "serverless-discovery-plugin",
+  "name": "@adastradev/serverless-discovery-plugin",
   "description": "Serverless plugin to register/de-register endpoints upon deploy and remove command hooks",
-  "version": "0.3.2",
+  "version": "1.0.0",
   "license": "MIT",
   "author": "Andrew Regier <aregier@regiernet.com>",
   "contributors": [
@@ -19,12 +19,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aregier/serverless-discovery-plugin.git"
+    "url": "git+https://github.com/adastradev/serverless-discovery-plugin.git"
   },
   "bugs": {
-    "url": "https://github.com/aregier/serverless-discovery-plugin"
+    "url": "https://github.com/adastradev/serverless-discovery-plugin"
   },
-  "homepage": "https://github.com/aregier/serverless-discovery-plugin#readme",
+  "homepage": "https://github.com/adastradev/serverless-discovery-plugin#readme",
   "keywords": [
     "serverless",
     "plugin",
@@ -34,7 +34,7 @@
     "discovery"
   ],
   "dependencies": {
-    "@adastradev/serverless-discovery-sdk": "0.0.7",
+    "@adastradev/serverless-discovery-sdk": "^1.0.0",
     "tomlify-j0.4": "^2.0.0",
     "yamljs": "^0.3.0"
   },
