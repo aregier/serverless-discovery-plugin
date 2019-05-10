@@ -143,7 +143,10 @@ export default class ServiceDiscoveryPlugin {
 
         const service: ServiceApiModel = {
             ServiceName: this.serverless.service.getServiceName(),
-            ServiceURL: data['ServiceEndpoint'], // tslint:disable-line
+            // This data variable is looking for the service endpoint from CloudFormation
+            // The alternative will look for a custom, freeform field under custom.discovery
+            // in the Serverless.yml
+            ServiceURL: data['ServiceEndpoint'] || JSON.stringify(this.getConfig('serviceURL')), // tslint:disable-line
             StageName: this.serverless.getProvider('aws').getStage(),
             Version: this.getConfig('version'),
             ExternalID: this.getConfig('externalID')
