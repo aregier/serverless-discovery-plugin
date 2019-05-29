@@ -152,7 +152,10 @@ export default class ServiceDiscoveryPlugin {
             ExternalID: this.getConfig('externalID')
         }
 
+        this.serverless.cli.log(`Registering: ${JSON.stringify(service)}`);
         const result = await discoveryApi.createService(service)
+        this.serverless.cli.log('Successfully registered.');
+
         return resolve(result)
       })
     ) : Promise.resolve()
@@ -168,11 +171,15 @@ export default class ServiceDiscoveryPlugin {
 
         const response = await discoveryApi.lookupService(
           this.serverless.service.getServiceName(),
-          this.serverless.getProvider('aws').getStage()
+          this.serverless.getProvider('aws').getStage(),
+          this.getConfig('version'),
+          this.getConfig('externalID')
         )
 
         const existingService: ServiceApiModel = response.data[0]
+
         if (existingService !== undefined && existingService.ServiceID !== undefined) {
+          this.serverless.cli.log(`Found service to delete: ${JSON.stringify(existingService)}`);
           await discoveryApi.deleteService(existingService.ServiceID)
           this.serverless.cli.log('Successfully de-registered service')
           return resolve(existingService.ServiceID)
