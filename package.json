@@ -15,7 +15,9 @@
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "lint": "tslint {src,test}/**/*.ts",
     "prebuild": "yarn clean",
-    "build": "tsc"
+    "build": "tsc",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -36,7 +38,8 @@
   "dependencies": {
     "@adastradev/serverless-discovery-sdk": "^1.1.2",
     "tomlify-j0.4": "^2.0.0",
-    "yamljs": "^0.3.0"
+    "yamljs": "^0.3.0",
+    "snyk": "^1.179.0"
   },
   "devDependencies": {
     "@types/jest": "^20.0.5",
@@ -60,5 +63,6 @@
       "ts",
       "js"
     ]
-  }
+  },
+  "snyk": true
 }
