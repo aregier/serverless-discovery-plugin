@@ -63,6 +63,33 @@ export default class ServiceDiscoveryPlugin {
     return this.hasConfig('file')
   }
 
+  public processDeploymentPropTags (propData: object, deploymentData: object) {
+    let result
+
+    this.serverless.cli.log(`Processing deployment prop tags ${JSON.stringify(propData)} in serviceUrl`)
+
+    if (!propData) {
+      return result
+    }
+
+    result = {}
+    for (const property of Object.keys(propData)) {
+      const childProp = propData[property]
+
+      this.serverless.cli.log(`Processing property ${property} in serviceUrl`)
+
+      // see if this child property is using the @DeploymentProp
+      if (childProp['@DeploymentProp']) {
+        result[property] = deploymentData[childProp['@DeploymentProp']]
+        this.serverless.cli.log(`Using deployment property ${childProp['@DeploymentProp']} in serviceUrl`)
+      } else {
+        result[property] = propData[property]
+      }
+    }
+
+    return result
+  }
+
   private getConfigPathValue (key: string) {
     return util.format('%s/%s',
       this.serverless.config.servicePath,
@@ -141,20 +168,31 @@ export default class ServiceDiscoveryPlugin {
           this.serverless.getProvider('aws').getRegion(),
           new PluginIAMCredentials(this.discoveryConfig))
 
+        // The custom, free form field under custom.discovery supports referencing
+        // deployment information like endpoints and function arns using the @DeploymentProp tag.
+        //
+        // A sample serverless.yml entry using deployment property references
+        //  serviceURL: {
+        //    servicePath: {'@DeploymentProp':'ServiceEndpoint'},
+        //    someLambdaFunctionArn: {'@DeploymentProp':'SomeLambdaFunctionArnLambdaFunctionQualifiedArn'}
+        //  }
+        //
+        const customServiceUrl = this.processDeploymentPropTags(this.getConfig('serviceURL'), data)
+
         const service: ServiceApiModel = {
-            ServiceName: this.serverless.service.getServiceName(),
-            // This data variable is looking for the service endpoint from CloudFormation
-            // The alternative will look for a custom, freeform field under custom.discovery
-            // in the Serverless.yml
-            ServiceURL: JSON.stringify(this.getConfig('serviceURL')) || data['ServiceEndpoint'], // tslint:disable-line
-            StageName: this.serverless.getProvider('aws').getStage(),
-            Version: this.getConfig('version'),
-            ExternalID: this.getConfig('externalID')
+          ExternalID: this.getConfig('externalID'),
+          ServiceName: this.serverless.service.getServiceName(),
+          // This data variable is looking for the service endpoint from CloudFormation
+          // The alternative will look for a custom, freeform field under custom.discovery
+          // in the Serverless.yml
+          ServiceURL: JSON.stringify(customServiceUrl) || data['ServiceEndpoint'], // tslint:disable-line
+          StageName: this.serverless.getProvider('aws').getStage(),
+          Version: this.getConfig('version')
         }
 
-        this.serverless.cli.log(`Registering: ${JSON.stringify(service)}`);
+        this.serverless.cli.log(`Registering: ${JSON.stringify(service)}`)
         const result = await discoveryApi.createService(service)
-        this.serverless.cli.log('Successfully registered.');
+        this.serverless.cli.log('Successfully registered.')
 
         return resolve(result)
       })
@@ -179,7 +217,7 @@ export default class ServiceDiscoveryPlugin {
         const existingService: ServiceApiModel = response.data[0]
 
         if (existingService !== undefined && existingService.ServiceID !== undefined) {
-          this.serverless.cli.log(`Found service to delete: ${JSON.stringify(existingService)}`);
+          this.serverless.cli.log(`Found service to delete: ${JSON.stringify(existingService)}`)
           await discoveryApi.deleteService(existingService.ServiceID)
           this.serverless.cli.log('Successfully de-registered service')
           return resolve(existingService.ServiceID)
