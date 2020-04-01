@@ -35,6 +35,7 @@
     "service",
     "discovery"
   ],
+  "files": ["dist"],
   "dependencies": {
     "@adastradev/serverless-discovery-sdk": "^2.1.1",
     "rifraf": "^2.0.3",
