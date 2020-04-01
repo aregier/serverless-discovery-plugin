@@ -1,5 +1,4 @@
 import { PluginIAMCredentials } from '../src/PluginIAMCredentials'
-// @ts-ignore
 import {DiscoveryConfig} from '../vendor/main'
 
 describe('PluginIAMCredentials', () => {
