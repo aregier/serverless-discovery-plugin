@@ -1,5 +1,8 @@
+import using from 'jasmine-data-provider'
+import util from 'util'
+
 import { PluginIAMCredentials } from '../src/PluginIAMCredentials'
-import {DiscoveryConfig} from '../vendor/main'
+import { DiscoveryConfig } from '../vendor/main'
 
 describe('PluginIAMCredentials', () => {
   describe('Constructor', () => {
