@@ -1,0 +1,33 @@
+image: node:10
+
+pipelines:
+  branches:
+    master:
+      - step:
+          script:
+            # Install module dependencies
+            - npm ci
+            - npm run lint
+            - npm run secure
+            # Build
+            - npm run build
+
+            # Run unit tests
+            - npm run test:unit
+
+            # Publish package
+            - npm publish --access=public
+
+    feature/*:
+      - step:
+          script:
+            # Install module dependencies
+            - npm ci
+            - npm run lint
+            - npm run secure
+
+            # Build
+            - npm run build
+
+            # Run unit tests
+            - npm run test:unit

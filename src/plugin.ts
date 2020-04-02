@@ -129,7 +129,7 @@ export default class ServiceDiscoveryPlugin {
     )
   }
 
-  private beautify (data: {Stacks: Array<{ Outputs: StackOutputPair[] }>}) {
+  private beautify (data: {Stacks: { Outputs: StackOutputPair[] }[]}) {
     const stack = data.Stacks.pop() || { Outputs: [] }
     const output = stack.Outputs || []
 

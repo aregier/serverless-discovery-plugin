@@ -1,8 +1,4 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
 version: v1.13.5
 ignore: {}
-# patches apply the minimum changes required to fix a vulnerability
-patch:
-  SNYK-JS-AXIOS-174505:
-    - '@adastradev/serverless-discovery-sdk > aws-api-gateway-client > axios':
-        patched: '2019-06-17T13:48:58.534Z'
+patch: {}
