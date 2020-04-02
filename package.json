@@ -10,14 +10,14 @@
   "main": "./dist/index.js",
   "scripts": {
     "clean": "rimraf dist",
-    "test": "jest",
+    "test:unit": "jest",
     "test:cover": "jest --coverage",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "lint": "tslint {src,test}/**/*.ts",
-    "prebuild": "yarn clean",
     "build": "tsc",
     "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "prepare": "npm run snyk-protect",
+    "secure": "snyk test"
   },
   "repository": {
     "type": "git",
@@ -35,7 +35,9 @@
     "service",
     "discovery"
   ],
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@adastradev/serverless-discovery-sdk": "^2.1.1",
     "rifraf": "^2.0.3",
