@@ -1,5 +1,7 @@
 # Serverless Discovery Plugin
 
+[![codecov](https://codecov.io/bb/adastradev/serverless-discovery-plugin/branch/master/graph/badge.svg?token=b2XEsAGvcN)](https://codecov.io/bb/adastradev/serverless-discovery-plugin)
+
 [![NPM](https://nodei.co/npm/serverless-discovery-plugin.png)](https://nodei.co/npm/serverless-discovery-plugin/)
 
 [![npm](https://img.shields.io/npm/v/serverless-discovery-plugin.svg)](https://www.npmjs.com/package/serverless-discovery-plugin)
