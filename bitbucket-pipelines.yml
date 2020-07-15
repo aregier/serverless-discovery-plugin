@@ -13,7 +13,8 @@ pipelines:
             - npm run build
 
             # Run unit tests
-            - npm run test:unit
+            - npm run test:cover
+            - npm run codecov
 
             # Publish package
             - npm publish --access=public
@@ -30,4 +31,5 @@ pipelines:
             - npm run build
 
             # Run unit tests
-            - npm run test:unit
+            - npm run test:cover
+            - npm run codecov

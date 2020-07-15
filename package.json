@@ -1,7 +1,7 @@
 {
   "name": "@adastradev/serverless-discovery-plugin",
   "description": "Serverless plugin to register/de-register endpoints upon deploy and remove command hooks",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "license": "MIT",
   "author": "Andrew Regier <aregier@regiernet.com>",
   "contributors": [
@@ -12,7 +12,7 @@
     "clean": "rimraf dist",
     "test:unit": "jest",
     "test:cover": "jest --coverage",
-    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "codecov": "cat ./coverage/lcov.info | codecov",
     "lint": "tslint {src,test}/**/*.ts",
     "build": "tsc",
     "snyk-protect": "snyk protect",
@@ -47,7 +47,7 @@
   "devDependencies": {
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.8",
-    "coveralls": "^3.0.11",
+    "codecov": "^3.7.0",
     "dot-json": "^1.2.0",
     "jasmine-data-provider": "^2.2.0",
     "jest": "^20.0.4",
