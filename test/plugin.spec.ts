@@ -148,4 +148,51 @@ describe('Plugin', () => {
       expect(test.file).toContain('foo/bar.toml')
     })
   })
+
+  describe('processDeploymentPropTags', () => {
+    it('should correctly parse deployment tags and create output object', () => {
+      const config = {
+        cli: { log: () => null },
+        config: {
+          servicePath: ''
+        },
+        getProvider,
+        region: 'us-east-1',
+        service: {
+          custom: {
+            discovery: {
+              file: 'foo/bar.toml'
+            }
+          },
+          provider: {
+            name: 'aws'
+          }
+        }
+      }
+
+      const propTagObject = {
+        nonPropValue: 'unchanged value',
+        servicePath: {'@DeploymentProp': 'ServiceEndpoint'},
+        someLambdaFunctionArn: {'@DeploymentProp': 'SomeLambdaFunctionArnLambdaFunctionQualifiedArn'}
+      }
+
+      const deployedPropsObject = {
+        ServiceEndpoint: 'https:someurl.com/1234',
+        SomeLambdaFunctionArnLambdaFunctionQualifiedArn: 'service-1234-serverlessdeploymentbuck-1vjy5rcxdcfce'
+      }
+
+      const test = new Plugin(config, {})
+      const result = test.processDeploymentPropTags(propTagObject, deployedPropsObject)
+
+      expect(result.servicePath).toEqual(deployedPropsObject.ServiceEndpoint)
+      expect(result.someLambdaFunctionArn).toEqual(deployedPropsObject.SomeLambdaFunctionArnLambdaFunctionQualifiedArn)
+      expect(result.nonPropValue).toEqual('unchanged value')
+
+      // verify that stringify of undefined returns undefined. required
+      // behavior in processing of deployment props
+      const stringify = JSON.stringify(undefined)
+      expect(stringify).toBe(undefined)
+    })
+  })
+
 })

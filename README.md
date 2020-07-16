@@ -1,5 +1,7 @@
 # Serverless Discovery Plugin
 
+[![codecov](https://codecov.io/bb/adastradev/serverless-discovery-plugin/branch/master/graph/badge.svg?token=b2XEsAGvcN)](https://codecov.io/bb/adastradev/serverless-discovery-plugin)
+
 [![NPM](https://nodei.co/npm/serverless-discovery-plugin.png)](https://nodei.co/npm/serverless-discovery-plugin/)
 
 [![npm](https://img.shields.io/npm/v/serverless-discovery-plugin.svg)](https://www.npmjs.com/package/serverless-discovery-plugin)
@@ -37,6 +39,35 @@ custom:
     deployHandler: scripts/deploy.handler # Same syntax as you already know
     removeHandler: scripts/remove.handler # Same syntax as you already know
     file: .build/stack.toml # toml, yaml, yml, and json format is available
+    version: 1.0.0 # you could alternatively source this from package.json, etc.
+    externalID: An alternative identifier/stage name for your service deployment
+```
+## Storing custom properties as part of service URL
+The service URL can store a JSON object of data as part of the registration process.  Setting the value of `serviceURL` with additional properties will store the additional properties with the service registration.  These additional properties will be returned when requesting the service information from the discovery service.
+
+### Example:
+```yaml
+    serviceURL: {
+      jobName: '${self:service}-${env:STAGE_NAME}',
+      jobDefinition: '${self:service}-${env:STAGE_NAME}'
+    }
+```
+## Referencing calculated serverless stack deployment properties
+The custom properties stored on the service URL can reference stack deployment properties and store the result of those properties when the service is registered.  The deployment properties are referenced using the `@DeploymentProp` tag in the custom property followed by the property to reference.  The available properties that can be referenced are the properties written to the `file` property of the custom `discovery` object declared in the serverless.yml file.
+
+### Example reference:
+```yaml
+  serviceURL: {
+    servicePath: {'@DeploymentProp':'ServiceEndpoint'},
+    someLambdaFunctionArn: {'@DeploymentProp':'SomeLambdaFunctionArnLambdaFunctionQualifiedArn'}
+  }
+```
+### Will translate to when stored in the discovery service:
+```yaml
+  serviceURL: {
+    servicePath: "https://APIGatewayID.execute-api.us-east-1.amazonaws.com/dev",
+    someLambdaFunctionArn: "arn:aws:lambda:us-east-1:AccountID:function:sls-stack-output-example-dev-example:9"
+  }
 ```
 
 ### Authentication

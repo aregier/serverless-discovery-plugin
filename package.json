@@ -1,7 +1,7 @@
 {
-  "name": "serverless-discovery-plugin",
+  "name": "@adastradev/serverless-discovery-plugin",
   "description": "Serverless plugin to register/de-register endpoints upon deploy and remove command hooks",
-  "version": "0.3.2",
+  "version": "1.2.4",
   "license": "MIT",
   "author": "Andrew Regier <aregier@regiernet.com>",
   "contributors": [
@@ -10,21 +10,23 @@
   "main": "./dist/index.js",
   "scripts": {
     "clean": "rimraf dist",
-    "test": "jest",
+    "test:unit": "jest",
     "test:cover": "jest --coverage",
-    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "codecov": "cat ./coverage/lcov.info | codecov",
     "lint": "tslint {src,test}/**/*.ts",
-    "prebuild": "yarn clean",
-    "build": "tsc"
+    "build": "tsc",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect",
+    "secure": "snyk test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aregier/serverless-discovery-plugin.git"
+    "url": "git+https://github.com/adastradev/serverless-discovery-plugin.git"
   },
   "bugs": {
-    "url": "https://github.com/aregier/serverless-discovery-plugin"
+    "url": "https://github.com/adastradev/serverless-discovery-plugin"
   },
-  "homepage": "https://github.com/aregier/serverless-discovery-plugin#readme",
+  "homepage": "https://github.com/adastradev/serverless-discovery-plugin#readme",
   "keywords": [
     "serverless",
     "plugin",
@@ -33,23 +35,28 @@
     "service",
     "discovery"
   ],
+  "files": [
+    "dist"
+  ],
   "dependencies": {
-    "@adastradev/serverless-discovery-sdk": "0.0.7",
+    "@adastradev/serverless-discovery-sdk": "^2.1.1",
+    "rifraf": "^2.0.3",
     "tomlify-j0.4": "^2.0.0",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "@types/jest": "^20.0.5",
-    "@types/node": "^8.0.19",
-    "coveralls": "^2.13.1",
-    "dot-json": "^1.0.3",
+    "@types/jest": "^25.1.4",
+    "@types/node": "^13.9.8",
+    "codecov": "^3.7.0",
+    "dot-json": "^1.2.0",
     "jasmine-data-provider": "^2.2.0",
     "jest": "^20.0.4",
-    "rimraf": "^2.6.2",
-    "sinon": "^2.3.6",
+    "rimraf": "^3.0.2",
+    "sinon": "^9.0.1",
+    "snyk": "^1.305.0",
     "ts-jest": "^20.0.7",
-    "tslint": "^5.5.0",
-    "typescript": "^2.4.2"
+    "tslint": "^6.1.0",
+    "typescript": "^3.8.3"
   },
   "jest": {
     "transform": {
@@ -60,5 +67,6 @@
       "ts",
       "js"
     ]
-  }
+  },
+  "snyk": true
 }
